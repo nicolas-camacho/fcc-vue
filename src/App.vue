@@ -9,7 +9,11 @@
       </b-row>
       <b-row class="justify-content-md-center">
         <b-col sm="6">
-          <QuestionBox/>
+          <QuestionBox
+            v-if="questions.length" 
+            :currentQuestion="questions[index]" 
+            :next="next"
+          />
         </b-col>
       </b-row>
     </b-container>
@@ -25,6 +29,28 @@ export default {
   components: {
     Header,
     QuestionBox
+  },
+  data() {
+    return {
+      questions: [],
+      index: 0
+    };
+  },
+  methods: {
+    next() {
+      this.index++
+    }
+  },
+  mounted() {
+    fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple", {
+      method: "get"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonData => {
+        this.questions = jsonData.results;
+      });
   }
 };
 </script>
