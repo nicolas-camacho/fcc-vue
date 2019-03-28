@@ -8,7 +8,7 @@
       <b-list-group>
         <b-list-group-item
           variant="light"
-          v-for="(answer, index) in answers"
+          v-for="(answer, index) in shuffledAnswers"
           :key="index"
           @click.prevent="selectAnswer(index)"
           :class="answerClass(index)"
@@ -69,9 +69,11 @@ export default {
         this.currentQuestion.correct_answer
       ];
       this.shuffledAnswers = _.shuffle(answers);
-      this.correctIndex = this.shuffledAnswers.indexOf(
-        this.currentQuestion.correct_answer
-      );
+      for (let i = 0; i < this.shuffledAnswers.length; i++) {
+        if (this.shuffledAnswers[i] === this.currentQuestion.correct_answer) {
+          this.correctIndex = i;
+        }
+      }
     },
     submitAnswer() {
       let isCorrect = false;
@@ -83,18 +85,22 @@ export default {
       this.answered = true;
       this.increment(isCorrect);
     },
-    answerClass(index){
-      let answerClass = ''
+    answerClass(index) {
+      let answerClass = "";
 
       if (!this.answered && this.selectedIndex === index) {
-        answerClass = 'selected'
+        answerClass = "selected";
       } else if (this.answered && this.correctIndex === index) {
-        answerClass = 'correct'
-      } else if (this.answered && this.selectedIndex === index && this.correctIndex !== index) {
-        answerClass = 'incorrect'
+        answerClass = "correct";
+      } else if (
+        this.answered &&
+        this.selectedIndex === index &&
+        this.correctIndex !== index
+      ) {
+        answerClass = "incorrect";
       }
 
-      return answerClass
+      return answerClass;
     }
   }
 };
