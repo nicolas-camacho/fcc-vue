@@ -55,18 +55,9 @@ export default {
     }
   },
   async mounted() {
-    //fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple", {
-    //  method: "get"
-    //})
     const response = await fetch("https://opentdb.com/api.php?amount=10&category=27&type=multiple")
     const jsonData = await response.json()
     this.questions = jsonData.results
-    // .then(response => {
-    //   return response.json();
-    // })
-    // .then(jsonData => {
-    //   this.questions = jsonData.results;
-    // });
   }
 };
 </script>
